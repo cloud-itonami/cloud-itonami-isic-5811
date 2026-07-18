@@ -1,0 +1,91 @@
+<html><head><meta charset="utf-8"><title>cloud-itonami-isic-5811 &middot; book publishing</title><style>
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ok { color: #137a3f; }
+body { font-family: system-ui,-apple-system,sans-serif; margin: 0; color: #1a1a1a; background: #fafafa; }
+header.bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #f0f0f0; }
+h2 { margin-top: 0; font-size: 15px; }
+.warn { color: #b25c00; background: #fff8e1; padding: 2px 6px; border-radius: 4px; }
+main { max-width: 980px; margin: 24px auto; padding: 0 20px; }
+header.bar h1 { font-size: 18px; margin: 0; font-weight: 600; }
+.muted { color: #888; font-size: 13px; }
+.critical { color: #fff; background: #b3261e; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.err { color: #b3261e; background: #fbe9e7; padding: 2px 6px; border-radius: 4px; }
+th { font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+header.bar .badge { margin-left: auto; font-size: 12px; color: #666; }
+code { font-size: 12px; background: #f4f4f4; padding: 1px 4px; border-radius: 3px; }
+</style></head><body>
+<header class="bar">
+  <h1>Book publishing operations coordination (ISIC 5811) — Operator Console</h1>
+  <span class="badge">read-only sample · governor-gated · editorial/legal/rights decisions permanently out of scope</span>
+</header>
+<main>
+  <section class="card">
+    <h2>Titles</h2>
+    <p class="muted">Demo snapshot — build-time-generated from <code>bookpubops.store</code> via <code>bookpubops.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>
+    <table>
+      <thead><tr><th>Title id</th><th>Name</th><th>Registered</th><th>Verified</th><th>Last op status</th></tr></thead>
+      <tbody>
+        <tr><td>title-1</td><td>The Silent Orchard (contract signed, rights cleared)</td><td><span class="ok">registered</span></td><td><span class="ok">verified</span></td><td><span class="critical">HARD hold &middot; scope-excluded</span></td></tr>
+        <tr><td>title-2</td><td>Coastal Winds: A Memoir (contract signed, rights cleared)</td><td><span class="ok">registered</span></td><td><span class="ok">verified</span></td><td><span class="muted">no activity</span></td></tr>
+        <tr><td>title-3</td><td>Undisclosed Manuscript (contract pending legal/rights vetting)</td><td><span class="ok">registered</span></td><td><span class="warn">unverified</span></td><td><span class="muted">no activity</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Committed coordination records</h2>
+    <p class="muted">Production-record logging / production-operation scheduling / distribution coordination / content-concern flags actually committed to the SSoT by this run — never a finalized editorial-content, legal-clearance or rights-grant decision (permanently out of this actor's scope).</p>
+    <table>
+      <thead><tr><th>Op</th><th>Title</th><th>Value</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><code>log-production-record</code></td><td>title-1</td><td>{:manuscript-status "final draft received", :print-run 5000}</td><td><span class="ok">auto-committed (phase 3, governor-clean)</span></td></tr>
+        <tr><td><code>schedule-production-operation</code></td><td>title-1</td><td>{:stage "typesetting", :date "2026-08-01"}</td><td><span class="ok">auto-committed (phase 3, governor-clean)</span></td></tr>
+        <tr><td><code>coordinate-distribution</code></td><td>title-1</td><td>{:channel "ebook", :release-date "2026-09-15"}</td><td><span class="ok">auto-committed (phase 3, governor-clean)</span></td></tr>
+        <tr><td><code>flag-content-concern</code></td><td>title-1</td><td>{:concern "possible unverified claim about a named individual in chapter 4", :confidence 0.92}</td><td><span class="ok">approved by op-1</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Action gate (BookPubGovernor, per-op)</h2>
+    <p class="muted">Rollout phase 3 (supervised-auto). A content-concern flag always needs a human to actually look at it, at every rollout phase.</p>
+    <table>
+      <thead><tr><th>Op</th><th>Gate</th></tr></thead>
+      <tbody>
+        <tr><td><code>:log-production-record</code></td><td><span class="ok">phase-3 auto-commit when clean &middot; manuscript status / print-run / ISBN-assignment logging</span></td></tr>
+        <tr><td><code>:schedule-production-operation</code></td><td><span class="ok">phase-3 auto-commit when clean &middot; editing/typesetting/print-run scheduling</span></td></tr>
+        <tr><td><code>:coordinate-distribution</code></td><td><span class="ok">phase-3 auto-commit when clean &middot; print-run/ebook distribution coordination</span></td></tr>
+        <tr><td><code>:flag-content-concern</code></td><td><span class="warn">ALWAYS human approval, at any phase &middot; defamation/copyright/factual-accuracy concern, never auto-committed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Action gate (BookPubGovernor, cross-cutting HARD checks)</h2>
+    <p class="muted">All three are permanent and un-overridable by any human approval — evaluated on every proposal regardless of op.</p>
+    <table>
+      <thead><tr><th>Rule</th><th>Check</th></tr></thead>
+      <tbody>
+        <tr><td><code>:title-unverified</code></td><td>target title must exist AND be independently <code>:registered?</code>/<code>:verified?</code> in the store -- never trusts the proposal's own claim</td></tr>
+        <tr><td><code>:effect-not-propose</code></td><td>every proposal's <code>:effect</code> must be <code>:propose</code> -- any other value is a claim to directly actuate outside governance</td></tr>
+        <tr><td><code>:scope-excluded</code></td><td>editorial-content-decision / legal-risk-clearance / rights-licensing-grant territory is permanently out of scope, scanned unconditionally on every proposal</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Audit ledger (this run)</h2>
+    <p class="muted">Append-only decision-fact log — every proposal, hold and commit this scenario produced.</p>
+    <table>
+      <thead><tr><th>Fact</th><th>Op</th><th>Title</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>committed</td><td><code>log-production-record</code></td><td>title-1</td><td>title-1</td></tr>
+        <tr><td>committed</td><td><code>schedule-production-operation</code></td><td>title-1</td><td>title-1</td></tr>
+        <tr><td>committed</td><td><code>coordinate-distribution</code></td><td>title-1</td><td>title-1</td></tr>
+        <tr><td>committed</td><td><code>flag-content-concern</code></td><td>title-1</td><td>title-1</td></tr>
+        <tr><td>governor-hold</td><td><code>log-production-record</code></td><td>title-99</td><td>title-unverified</td></tr>
+        <tr><td>governor-hold</td><td><code>schedule-production-operation</code></td><td>title-1</td><td>effect-not-propose</td></tr>
+        <tr><td>governor-hold</td><td><code>log-production-record</code></td><td>title-1</td><td>scope-excluded</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body></html>
