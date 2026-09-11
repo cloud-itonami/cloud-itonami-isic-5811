@@ -54,11 +54,11 @@ clojure -M:run
 
 ## Test suite
 
-- `test/bookpubops/governor_test.clj` — unit tests of governor hard checks and scope exclusion
-- `test/bookpubops/advisor_test.clj` — advisor proposal shape and consistency
-- `test/bookpubops/phase_test.clj` — rollout phase logic
-- `test/bookpubops/governor_contract_test.clj` — full graph integration, audit trail
-- `test/bookpubops/store_contract_test.clj` — Store protocol and MemStore implementation
+- `test/bookpubops/governor_test.cljk` — unit tests of governor hard checks and scope exclusion
+- `test/bookpubops/advisor_test.cljk` — advisor proposal shape and consistency
+- `test/bookpubops/phase_test.cljk` — rollout phase logic
+- `test/bookpubops/governor_contract_test.cljk` — full graph integration, audit trail
+- `test/bookpubops/store_contract_test.cljk` — Store protocol and MemStore implementation
 
 ## Modules
 
