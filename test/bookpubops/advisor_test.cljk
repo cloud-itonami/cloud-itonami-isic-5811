@@ -1,6 +1,6 @@
 (ns bookpubops.advisor-test
   "Unit tests of `bookpubops.advisor` proposal generation."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [bookpubops.advisor :as adv]
             [bookpubops.governor :as gov]
             [bookpubops.store :as store]))
