@@ -1,6 +1,6 @@
 (ns bookpubops.phase-test
   "Unit tests of `bookpubops.phase` rollout logic."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [bookpubops.phase :as phase]))
 
 (def clean-verdict {:hard? false :escalate? false})
